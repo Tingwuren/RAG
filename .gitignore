@@ -1,0 +1,30 @@
+# 环境变量文件
+.env
+
+# 忽略模型文件夹
+/models/
+
+# 忽略数据文件夹
+data/
+
+# Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg 

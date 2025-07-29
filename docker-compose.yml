@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+volumes:
+  mysql_data:
+  es_data:
