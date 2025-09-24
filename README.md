@@ -31,18 +31,6 @@ git clone <repository-url>
 cd rag
 ```
 
-docker-compose up -d
-```
-
-```bash
-
-### 1. 克隆项目
-
-```bash
-# DeepSeek API 密钥（必需）
-DEEPSEEK_API_KEY=your_deepseek_api_key_here
-```
-
 ### 2. 配置环境变量
 
 ```bash
