@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://myuser:mypassword@localhost:3306/mydatabase"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://myuser:mypassword@mysql:3306/mydatabase"
     SECRET_KEY = '123456'  # 用于启用 session 和 cookie 的加密
 
     DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
     DEEPSEEK_BASE_URL = "https://api.deepseek.com"
     
     # Ollama 配置
-    OLLAMA_API_URL = "http://localhost:11434"    # Ollama API的URL
+    OLLAMA_API_URL = "http://ollama:11434"    # Ollama API的URL
     OLLAMA_DEFAULT_MODEL = "deepseek-r1:8b"     # 默认的Ollama模型
     OLLAMA_DEFAULT_TEMPERATURE = 0.5             # 默认的温度参数
     
@@ -21,4 +21,4 @@ class Config:
     
     CHROMA_PERSIST_DIR = "./data/chroma"
     
-    ELASTICSEARCH_URL = "http://localhost:9200"
+    ELASTICSEARCH_URL = "http://elasticsearch:9200"

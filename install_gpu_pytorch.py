@@ -25,13 +25,14 @@ def install_pytorch_cuda(cuda_version):
     """根据CUDA版本安装PyTorch"""
     
     # 根据CUDA版本选择对应的PyTorch版本
+    pip_mirror = ["-i", "https://mirrors.ustc.edu.cn/pypi/web/simple"]
     if cuda_version and float(cuda_version) >= 12.1:
         # CUDA 12.1+ - 使用可用的最新版本
         install_cmd = [
             sys.executable, "-m", "pip", "install",
             "torch", "torchvision", "torchaudio",
             "--index-url", "https://download.pytorch.org/whl/cu121"
-        ]
+        ] + pip_mirror
         print(f"🚀 安装CUDA 12.1版本的PyTorch (最新版本)...")
     elif cuda_version and float(cuda_version) >= 11.8:
         # CUDA 11.8
@@ -39,7 +40,7 @@ def install_pytorch_cuda(cuda_version):
             sys.executable, "-m", "pip", "install",
             "torch", "torchvision", "torchaudio",
             "--index-url", "https://download.pytorch.org/whl/cu118"
-        ]
+        ] + pip_mirror
         print(f"🚀 安装CUDA 11.8版本的PyTorch (最新版本)...")
     else:
         # CPU版本
@@ -47,7 +48,7 @@ def install_pytorch_cuda(cuda_version):
             sys.executable, "-m", "pip", "install",
             "torch", "torchvision", "torchaudio",
             "--index-url", "https://download.pytorch.org/whl/cpu"
-        ]
+        ] + pip_mirror
         print(f"🚀 安装CPU版本的PyTorch (最新版本)...")
     
     try:

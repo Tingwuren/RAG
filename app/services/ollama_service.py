@@ -24,8 +24,8 @@ def query_local_llm(prompt=None, messages=None, model=None, temperature=None, st
         非流式模式下返回模型响应的文本内容
         流式模式下返回完整的响应对象，需要调用者自行处理
     '''
-    # 从配置中获取默认值
-    if model is None:
+    # 从配置中获取默认值（防止 model 为空字符串或 None）
+    if not model:
         model = current_app.config.get('OLLAMA_DEFAULT_MODEL', 'deepseek-r1:8b')
     
     if temperature is None:

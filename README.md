@@ -20,10 +20,7 @@
 
 ## 环境要求
 
-- Python 3.8+
-- Node.js 16+
-- Docker & Docker Compose
-- Ollama (用于本地 LLM)
+- Docker & Docker Compose（包含所有依赖服务、后端、前端、Ollama）
 
 ## 快速开始
 
@@ -34,78 +31,71 @@ git clone <repository-url>
 cd rag
 ```
 
-### 2. 启动基础服务
-
-```bash
-# 启动 MySQL 和 Elasticsearch
 docker-compose up -d
 ```
 
-### 3. 安装 Ollama 并下载模型
-
 ```bash
-# 安装 Ollama (Linux/macOS)
-curl -fsSL https://ollama.ai/install.sh | sh
 
-# 下载 DeepSeek-R1 模型
-ollama pull deepseek-r1:8b
-```
-
-### 4. 环境变量配置
-
-```bash
-# 复制环境变量模板文件
-cp .env.example .env
-
-# 编辑 .env 文件，配置您的 API 密钥
-# DEEPSEEK_API_KEY=your_deepseek_api_key_here
-```
-
-### 5. 后端设置
-
-```bash
-# 创建conda环境
-conda create -n rag python=3.10
-conda activate rag
-
-# 安装GPU版本的PyTorch
-python install_gpu_pytorch.py
-
-# 安装 Python 依赖
-pip install -r requirements.txt
-
-# 下载嵌入模型（可选，首次运行会自动下载）
-python download_model.py
-
-# 启动后端服务
-python run.py
-```
-
-后端服务将在 `http://localhost:5000` 启动
-
-### 6. 前端设置
-
-```bash
-cd frontend
-
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
-```
-
-前端服务将在 `http://localhost:5173` 启动
-
-## 配置说明
-
-### 环境变量配置 (`.env`)
-
-项目使用环境变量来管理敏感配置信息。请复制 `.env.example` 文件为 `.env` 并配置以下变量：
+### 1. 克隆项目
 
 ```bash
 # DeepSeek API 密钥（必需）
 DEEPSEEK_API_KEY=your_deepseek_api_key_here
+```
+
+### 2. 配置环境变量
+
+```bash
+# 复制环境变量模板文件
+cp .env.example .env
+# 编辑 .env 文件，配置您的 API 密钥
+# DEEPSEEK_API_KEY=your_deepseek_api_key_here
+```
+
+### 3. 一键启动所有服务（推荐）
+
+```bash
+docker-compose up --build -d
+```
+
+此命令会自动启动：
+- MySQL
+- Elasticsearch
+- Ollama
+- Flask 后端
+- Vue 前端
+
+前端服务默认在 `http://localhost:5173`，后端服务在 `http://localhost:5000`。
+
+---
+
+### 4. 拉取 Ollama 本地模型（首次启动后执行）
+
+Ollama 容器首次启动后，需要手动拉取 deepseek-r1:8b 模型：
+
+```bash
+# 确认 ollama 服务已启动
+sudo docker compose up -d ollama
+# 拉取模型（可实时看到进度）
+sudo docker exec ollama ollama pull deepseek-r1:8b
+```
+
+如需查看已下载模型：
+```bash
+sudo docker exec ollama ollama list
+```
+
+> ⚠️ 不建议在 Dockerfile 或 build 阶段拉取模型，否则构建过程会极慢且无进度显示，且每次重建镜像都需重新下载。
+
+如需关闭服务：
+```bash
+docker-compose down
+```
+
+如需查看日志：
+```bash
+docker-compose logs
+```
 ```
 
 **注意**: `.env` 文件已被添加到 `.gitignore` 中，不会被提交到版本控制系统。
@@ -199,31 +189,8 @@ server: {
 
 ## 开发说明
 
-### 后端开发
-
-```bash
-# 开发模式启动
-export FLASK_ENV=development
-python run.py
-```
-
-### 前端开发
-
-```bash
-cd frontend
-npm run dev
-```
-
-### 构建生产版本
-
-```bash
-# 前端构建
-cd frontend
-npm run build
-
-# 后端生产模式
-python run.py  # debug=False
-```
+### 本地开发（可选）
+如需在本地调试单独服务，可参考原有 app/Dockerfile、frontend/Dockerfile，或分别进入对应目录手动运行。
 
 ## 故障排除
 
@@ -235,8 +202,8 @@ python run.py  # debug=False
    - 确认 `.env` 文件在项目根目录
 
 2. **Ollama 连接失败**
-   - 确保 Ollama 服务正在运行：`ollama serve`
-   - 检查模型是否已下载：`ollama list`
+   - 确保 Ollama 服务容器已启动（docker-compose ps）
+   - 检查模型是否已下载：`docker exec -it ollama ollama list`
 
 3. **数据库连接错误**
    - 确保 Docker 服务正在运行：`docker-compose ps`

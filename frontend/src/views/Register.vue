@@ -85,7 +85,7 @@ const handleRegister = async () => {
 
   isSubmitting.value = true
   try {
-    const response = await api.post('/api/register', {
+    const response = await api.post('/register', {
       username: username.value,
       password: password.value,
       role: role.value
