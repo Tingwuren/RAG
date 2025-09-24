@@ -84,7 +84,6 @@ docker-compose down
 ```bash
 docker-compose logs
 ```
-```
 
 **注意**: `.env` 文件已被添加到 `.gitignore` 中，不会被提交到版本控制系统。
 
