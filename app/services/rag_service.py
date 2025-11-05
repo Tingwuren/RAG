@@ -27,7 +27,7 @@ class RAG_Bot:
         self.n_results = n_results
         self.vector_top_n = vector_top_n
         self.es_top_n = es_top_n
-        self.reranker = get_reranker()  # 初始化 reranker 模型
+        self.reranker = current_app.reranker
 
     def chat(self, user_query):
         # 向量数据库检索
@@ -106,7 +106,7 @@ class Dialect_RAG_Bot:
         self.n_results = n_results
         self.vector_top_n = vector_top_n
         self.es_top_n = es_top_n
-        self.reranker = get_reranker()  # 初始化 reranker 模型
+        self.reranker = current_app.reranker
         
     def map_retrieved_vectors_to_documents(self, retrieved_vectors):
         full_documents = []

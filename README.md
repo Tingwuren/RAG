@@ -39,8 +39,15 @@ cp .env.example .env
 # 编辑 .env 文件，配置您的 API 密钥
 # DEEPSEEK_API_KEY=your_deepseek_api_key_here
 ```
+### 3. 下载 Nvidia 相关驱动
+需提前下载 Nvidia 驱动；
 
-### 3. 一键启动所有服务（推荐）
+下载`nvidia-container-toolkit`：
+```bash
+sudo apt install -y nvidia-container-toolkit
+```
+
+### 4. 一键启动所有服务（推荐）
 
 ```bash
 docker-compose up --build -d
@@ -57,7 +64,7 @@ docker-compose up --build -d
 
 ---
 
-### 4. 拉取 Ollama 本地模型（首次启动后执行）
+### 5. 拉取 Ollama 本地模型（首次启动后执行）
 
 Ollama 容器首次启动后，需要手动拉取 deepseek-r1:8b 模型：
 
@@ -209,4 +216,7 @@ docker-compose logs
 # 查看特定服务日志
 docker-compose logs mysql
 docker-compose logs elasticsearch
+
+# 实时查看后端日志
+docker-compose logs -f backend
 ```

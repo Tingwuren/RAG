@@ -3,6 +3,7 @@ from .extensions import db, MyVectorDBConnector, MyEsConnector
 from .routes import auth_bp, chat_bp, knowledge_bp
 from .config import Config
 from .services.embedding_service import get_embeddings
+from .services.reranker_service import get_reranker
 from .services.file_service import process_rhyme_table, process_word_table
 from .utils.chinese_utils import to_keywords 
 from elasticsearch7 import Elasticsearch
@@ -21,6 +22,10 @@ def create_app():
         persist_directory=app.config.get("CHROMA_PERSIST_DIR")
     )
     app.vector_db = vector_db
+    
+    # 初始化 Reranker 模型
+    reranker = get_reranker()
+    app.reranker = reranker
     
     # 初始化 Elasticsearch Connector
     es = Elasticsearch(app.config.get("ELASTICSEARCH_URL"))
